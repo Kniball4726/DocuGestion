@@ -11,6 +11,10 @@ import utils.Utiles;
 public class RemitoCrud {
     private final List<Remito> remitos = new ArrayList<>();
 
+    public List<Remito> getRemitos() {
+        return List.copyOf(remitos);
+    }
+
     public void crearPedido() {
         int numero;
         do {

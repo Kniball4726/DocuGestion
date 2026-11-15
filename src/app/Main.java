@@ -11,7 +11,7 @@ public class Main {
                 System.out.println("Inicio de sesión fallido.");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Ocurrió un error: " + e.getMessage());
         }
     }
 }

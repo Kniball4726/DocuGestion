@@ -56,6 +56,10 @@ public class Remito extends Documento {
 		this.preparado = true;
 	}
 
+	public void desmarcarComoPreparado() {
+		this.preparado = false;
+	}
+
 	
 	@Override
 	public String toString() {

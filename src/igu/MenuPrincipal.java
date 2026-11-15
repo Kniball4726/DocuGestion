@@ -1,6 +1,9 @@
 package igu;
 
+import persistencia.DespachoCrud;
+import persistencia.DocumentoCrud;
 import persistencia.RemitoCrud;
+import persistencia.UsuariosCrud;
 import utils.Utiles;
 
 
@@ -9,6 +12,9 @@ public class MenuPrincipal {
     public static void MenuP(String rol){
     
     	RemitoCrud remitoCrud = new RemitoCrud();
+    	DespachoCrud despachoCrud = new DespachoCrud();
+    	DocumentoCrud documentoCrud = new DocumentoCrud(remitoCrud, despachoCrud);
+    	UsuariosCrud usuariosCrud = new UsuariosCrud();
         
     	try {
             while (true) {
@@ -20,6 +26,7 @@ public class MenuPrincipal {
                     System.out.println("3.- Eliminar pedido");
                     System.out.println("4.- Eliminar despacho");
                     System.out.println("5.- Gestionar usuarios");
+                    System.out.println("6.- Consultar todos los documentos");
                     System.out.println("0.- Salir");
                 }else if (rol.equals("vendedor")) {
                 	System.out.println("1.- Cargar pedido");
@@ -42,66 +49,95 @@ public class MenuPrincipal {
                 switch (seleccion) {
                     case 1:
                         if (rol.equals("admin") || rol.equals("logistica")) {
-                            remitoCrud.listarPedidos();;    
+                            remitoCrud.listarPedidos();
                         } else if (rol.equals("vendedor")) {
                             remitoCrud.crearPedido();
                         } else if (rol.equals("operario")) {
-                        	
+                            despachoCrud.crearDespacho();
                         } else {
-                            System.out.println("Caso 1 otro rol");
+                            remitoCrud.listarPedidos();
                         }
                         break;
                     case 2:
                     	if (rol.equals("admin") || rol.equals("logistica")) {
-                            System.out.println("Caso 2 admin");
+                            despachoCrud.listarDespachos();
                         } else if (rol.equals("vendedor")) {
-                            System.out.println("Caso 2 vendedor");
+                            remitoCrud.listarPedidos();
                         } else if (rol.equals("operario")) {
-                            System.out.println("Caso 2 operario");
+                            despachoCrud.listarDespachos();
                         } else {
-                            System.out.println("Caso 2 otro rol");
+                            despachoCrud.listarDespachos();
                         }
                     	break;
                     case 3:
                     	if (rol.equals("admin")) {
-                            System.out.println("Caso 3 admin");
+                            remitoCrud.eliminarPedido();
                         } else if (rol.equals("vendedor")) {
-                            System.out.println("Caso 3 vendedor");
+                            remitoCrud.actualizarPedido();
                         } else if (rol.equals("operario")) {
-                            System.out.println("Caso 3 operario");
+                            despachoCrud.actualizarDespacho();
                         } else {
-                            System.out.println("Caso 3 otro rol");
+                            System.out.println("Opción no disponible para este rol.");
                         }
                     	break;
                     case 4:
                     	if (rol.equals("admin")) {
-                            System.out.println("Caso 4 admin");
-                        } else if (rol.equals("vendedor")) {
-                            System.out.println("Caso 4 vendedor");
-                        } else if (rol.equals("operario")) {
-                            System.out.println("Caso 4 operario");
+                            despachoCrud.eliminarDespacho();
                         } else {
-                            System.out.println("Caso 4 otro rol");
+                            System.out.println("Opción no disponible para este rol.");
                         }
                         break;
                     case 5:
                     	if (rol.equals("admin")) {
-                            System.out.println("Caso 5 admin");
-                        } else if (rol.equals("vendedor")) {
-                            System.out.println("Caso 5 vendedor");
-                        } else if (rol.equals("operario")) {
-                            System.out.println("Caso 5 operario");
+                            int opcionUsuario;
+                            do {
+                                System.out.println("--- Gestión de usuarios ---");
+                                System.out.println("1.- Crear usuario");
+                                System.out.println("2.- Listar usuarios");
+                                System.out.println("3.- Buscar usuario");
+                                System.out.println("4.- Actualizar usuario");
+                                System.out.println("5.- Eliminar usuario");
+                                System.out.println("0.- Volver");
+                                opcionUsuario = Utiles.leerEntero();
+
+                                switch (opcionUsuario) {
+                                    case 1:
+                                        usuariosCrud.crearUsuarioDesdeConsola();
+                                        break;
+                                    case 2:
+                                        usuariosCrud.listarUsuarios();
+                                        break;
+                                    case 3:
+                                        usuariosCrud.buscarUsuario();
+                                        break;
+                                    case 4:
+                                        usuariosCrud.actualizarUsuario();
+                                        break;
+                                    case 5:
+                                        usuariosCrud.eliminarUsuario();
+                                        break;
+                                    case 0:
+                                        break;
+                                    default:
+                                        System.out.println("Opción inválida.");
+                                }
+                            } while (opcionUsuario != 0);
                         } else {
-                            System.out.println("Caso 5 otro rol");
+                            System.out.println("Opción no disponible para este rol.");
+                        }
+                        break;
+                    case 6:
+                        if (rol.equals("admin")) {
+                            documentoCrud.listarDocumentos();
+                        } else {
+                            System.out.println("Opción no disponible para este rol.");
                         }
                         break;
 
                     case 0:
-                    	System.exit(0);
-                    	break;
+                        return;
                     default:
-                    	System.out.println("Error: Debe introducir un número valido");
-                    	MenuP(rol);
+                    	System.out.println("Opción inválida. Seleccione una opción del menú.");
                         break;
                 }
 

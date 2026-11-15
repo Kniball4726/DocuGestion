@@ -33,16 +33,38 @@ public class Despacho extends Documento {
         return operario;
     }
 
+    public void setOperario(String operario) {
+        if (operario == null || operario.isBlank()) {
+            throw new IllegalArgumentException("El operario no puede estar vacío.");
+        }
+        this.operario = operario;
+    }
+
     public int getBultos() {
         return bultos;
+    }
+
+    public void setBultos(int bultos) {
+        if (bultos < 0) {
+            throw new IllegalArgumentException("La cantidad de bultos no puede ser negativa.");
+        }
+        this.bultos = bultos;
     }
 
     public String getNota() {
         return nota;
     }
 
+    public void setNota(String nota) {
+        this.nota = nota == null ? "" : nota;
+    }
+
     public boolean isEntregado() {
         return entregado;
+    }
+
+    public void setEntregado(boolean entregado) {
+        this.entregado = entregado;
     }
 
     public void marcarComoEntregado() {
