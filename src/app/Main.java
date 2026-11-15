@@ -1,9 +1,17 @@
 package app;
-
+import igu.MenuPrincipal;
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Indique su nombre");
-        String nombre = utils.Utiles.leerString();
-        System.out.println("Hola, " + nombre);
+        try {
+            String rol = igu.Login.loguear();
+            if (rol != null) {
+                MenuPrincipal.MenuP(rol);
+            }else{
+                System.out.println("Inicio de sesión fallido.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
+
