@@ -1,54 +1,80 @@
 package logica;
 
-import java.util.ArrayList;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Remito extends Documento {
+	private int num_remito;
+	private LocalDate fecha_entrega;
+	private ArrayList<Detalle> detalles = new ArrayList<>();
+	private boolean preparado;
 
-    private int numero;
-    private String cliente;
-    private LocalDate fecha_entrega;
-    private int bultos;
-    private String operario;
-    private ArrayList<DetalleRemito> detalles = new ArrayList<>();
+	public Remito(int num_remito) {
+		super("Remito", LocalDate.now());
+		this.num_remito = num_remito;
+		this.fecha_entrega = getFecha_creacion().plusDays(1);
 
-    public Remito(int numero, String cliente, LocalDate fecha_entrega, int bultos, String operario) {
-        super("Remito", LocalDate.now());
-        this.numero = numero;
-        this.cliente = cliente;
-        this.fecha_entrega = fecha_entrega;
-        this.bultos = bultos;
-        this.operario = operario;
-    }
+	}
 
-    public void agregarProducto(Producto producto, int cantidad) {
-        detalles.add(new DetalleRemito(producto, cantidad));
-    }
+	public void agregarProducto(Producto producto) {
+		detalles.add(new Detalle(producto));
+	}
 
-    public void mostrarProductos() {
-        for (DetalleRemito detalle : detalles) {
-            System.out.println(detalle);
-        }
-    }
+	public List<Detalle> getDetalles() {
+		return List.copyOf(detalles);
+	}
 
-    public int getNumero() {
-        return numero;
-    }
+	public void actualizarProducto(int indice, Producto producto) {
+		detalles.set(indice, new Detalle(producto));
+	}
 
-    public String getCliente() {
-        return cliente;
-    }
+	public void eliminarProducto(int indice) {
+		detalles.remove(indice);
+	}
 
-    
+	public int getNum_remito() {
+		return num_remito;
+	}
 
-    @Override
-    public void mostrarInformacion() {
-        System.out.println("Número: " + numero);
-        System.out.println("Cliente: " + cliente);
-        System.out.println("Fecha de entrega: " + fecha_entrega);
-        System.out.println("Bultos: " + bultos);
-        System.out.println("Operario: " + operario);
-        mostrarProductos();
-    }
+	public void setNum_remito(int num_remito) {
+		this.num_remito = num_remito;
+	}
 
+	public LocalDate getFecha_entrega() {
+		return fecha_entrega;
+	}
+
+	public boolean isPreparado() {
+		return preparado;
+	}
+
+	public void marcarComoPreparado() {
+		if (preparado) {
+			throw new IllegalStateException("Ya se creó un despacho para este remito.");
+		}
+		this.preparado = true;
+	}
+
+	
+	@Override
+	public String toString() {
+		return super.toString()+"Remito:\nNum_remito: " + num_remito + "\nFecha_entrega: " + fecha_entrega + "\nProductos: " + detalles
+				+ "\nPreparado: " + preparado;
+	}
+
+	@Override
+	public void mostrarInformacion() {
+		System.out.println("Número: " + num_remito);
+		System.out.println("Fecha de creación: " + getFecha_creacion());
+		System.out.println("Fecha de entrega: " + fecha_entrega);
+		System.out.println("Preparado: " + (preparado ? "Sí" : "No"));
+		System.out.println("Productos:");
+		for (Detalle detalle : detalles) {
+			System.out.println(detalle);
+		}
+	}
+
+	
 }
+

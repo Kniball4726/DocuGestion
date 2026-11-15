@@ -1,9 +1,10 @@
 package app;
+import igu.Login;
 import igu.MenuPrincipal;
 public class Main {
     public static void main(String[] args) {
         try {
-            String rol = igu.Login.loguear();
+            String rol = Login.loguear();
             if (rol != null) {
                 MenuPrincipal.MenuP(rol);
             }else{

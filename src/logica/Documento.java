@@ -7,12 +7,13 @@ public abstract class Documento {
 
     protected final int id_documento;
     protected String tipo;
-    protected LocalDate fecha;
+    protected String cliente;
+    protected LocalDate fecha_creacion;
 
-    public Documento(String tipo, LocalDate fecha) {
+    public Documento(String tipo, LocalDate fecha_creacion) {
         this.id_documento = siguienteId++;
         this.tipo = tipo;
-        this.fecha = fecha;
+        this.fecha_creacion = fecha_creacion;
     }
 
 
@@ -24,13 +25,17 @@ public abstract class Documento {
         return tipo;
     }
 
+    public LocalDate getFecha_creacion() {
+        return fecha_creacion;
+    }
+
     public LocalDate getFecha() {
-        return fecha;
+        return fecha_creacion;
     }
 
     @Override 
     public String toString(){
-        return "\nID: " + id_documento + "\nTipo: " + tipo + "\nCreaciòn: " + fecha;
+        return "\nID: " + id_documento + "\nTipo: " + tipo + "\nCliente: " + cliente +  "\nCreaciòn: " + fecha_creacion;
     }
 
     public abstract void mostrarInformacion();
