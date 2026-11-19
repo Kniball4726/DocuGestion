@@ -30,16 +30,19 @@ public class MenuPrincipal {
                     System.out.println("1.- Ver despachos");
                     System.out.println("2.- Eliminar despacho");
                     System.out.println("3.- Gestionar usuarios");
+                    System.out.println("4.- Ver historial general de documentos (Polimorfismo)");
                     System.out.println("0.- Salir");
                 }
                 case "vendedor", "logistica" -> {
                     System.out.println("1.- Ver despachos");
+                    System.out.println("2.- Ver historial general de documentos (Polimorfismo)");
                     System.out.println("0.- Salir");
                 }
                 case "operario" -> {
                     System.out.println("1.- Cargar despacho");
                     System.out.println("2.- Ver despachos");
                     System.out.println("3.- Modificar despacho");
+                    System.out.println("4.- Ver historial general de documentos (Polimorfismo)");
                     System.out.println("0.- Salir");
                 }
                 default -> throw new IllegalStateException("Rol no validado: " + rol);
@@ -72,6 +75,10 @@ public class MenuPrincipal {
                                 mostrarEncabezado("Consultar despachos", "Ver despachos");
                                 despachoCrud.listarDespachos();
                             }
+                            case "vendedor", "logistica" -> {
+                                mostrarEncabezado("Consultar documentos", "Historial de documentos");
+                                despachoCrud.listarHistorialDocumentos();
+                            }
                             default -> System.out.println("Opción no disponible para este rol.");
                         }
                     }
@@ -79,46 +86,20 @@ public class MenuPrincipal {
                         switch (rol) {
                             case "admin" -> {
                                 mostrarEncabezado("Administrar usuarios", "Gestionar usuarios");
-                                int opcionUsuario;
-                                do {
-                                    System.out.println("\n--- Gestión de usuarios ---");
-                                    System.out.println("1.- Crear usuario");
-                                    System.out.println("2.- Listar usuarios");
-                                    System.out.println("3.- Buscar usuario");
-                                    System.out.println("4.- Actualizar usuario");
-                                    System.out.println("5.- Eliminar usuario");
-                                    System.out.println("0.- Volver");
-                                    opcionUsuario = leerEntero("Seleccione una opción: ");
-
-                                    switch (opcionUsuario) {
-                                        case 1 -> {
-                                            mostrarEncabezado("Registrar usuario", "Crear usuario");
-                                            usuariosCrud.crearUsuarioDesdeConsola();
-                                        }
-                                        case 2 -> {
-                                            mostrarEncabezado("Consultar usuarios", "Listar usuarios");
-                                            usuariosCrud.listarUsuarios();
-                                        }
-                                        case 3 -> {
-                                            mostrarEncabezado("Buscar usuario", "Buscar usuario");
-                                            usuariosCrud.buscarUsuario();
-                                        }
-                                        case 4 -> {
-                                            mostrarEncabezado("Modificar usuario", "Actualizar usuario");
-                                            usuariosCrud.actualizarUsuario();
-                                        }
-                                        case 5 -> {
-                                            mostrarEncabezado("Eliminar usuario", "Eliminar usuario");
-                                            usuariosCrud.eliminarUsuario();
-                                        }
-                                        case 0 -> mostrarEncabezado("Volver al menú principal", "Volver");
-                                        default -> System.out.println("Opción inválida.");
-                                    }
-                                } while (opcionUsuario != 0);
+                                MenuUsers.mostrarMenu(usuariosCrud);
                             }
                             case "operario" -> {
                                 mostrarEncabezado("Modificar despacho", "Modificar despacho");
                                 despachoCrud.actualizarDespacho();
+                            }
+                            default -> System.out.println("Opción no disponible para este rol.");
+                        }
+                    }
+                    case 4 -> {
+                        switch (rol) {
+                            case "admin", "operario" -> {
+                                mostrarEncabezado("Consultar documentos", "Historial de documentos");
+                                despachoCrud.listarHistorialDocumentos();
                             }
                             default -> System.out.println("Opción no disponible para este rol.");
                         }

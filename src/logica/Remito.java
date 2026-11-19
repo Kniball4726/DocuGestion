@@ -79,6 +79,9 @@ public class Remito extends Documento {
 		}
 	}
 
-	
+	@Override
+	public String obtenerResumen() {
+		return "Remito Nº " + num_remito + " | Entrega: " + fecha_entrega + " | Ítems: " + detalles.size() + " | Preparado: " + (preparado ? "Sí" : "No");
+	}
 }
 

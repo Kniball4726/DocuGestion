@@ -1,0 +1,487 @@
+import os
+import subprocess
+
+html_content = """<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Informe de Cumplimiento POO - DocuGestión 2</title>
+<style>
+    @page {
+        size: A4;
+        margin: 18mm 15mm 18mm 15mm;
+        @bottom-right {
+            content: counter(page);
+        }
+    }
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #1f2328;
+        line-height: 1.5;
+        font-size: 13px;
+        margin: 0;
+        padding: 0;
+    }
+    .header-box {
+        border-bottom: 3px solid #0969da;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+    }
+    .header-box h1 {
+        font-size: 24px;
+        color: #0969da;
+        margin: 0 0 6px 0;
+    }
+    .header-box .subtitle {
+        font-size: 14px;
+        color: #59636e;
+        margin: 0;
+    }
+    .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        background: #f6f8fa;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        padding: 10px 14px;
+        margin-bottom: 20px;
+        font-size: 12px;
+    }
+    .meta-item strong {
+        color: #1f2328;
+        display: block;
+    }
+    h2 {
+        font-size: 16px;
+        color: #1f2328;
+        border-bottom: 1px solid #d8dee4;
+        padding-bottom: 4px;
+        margin-top: 24px;
+        margin-bottom: 12px;
+    }
+    h3 {
+        font-size: 14px;
+        color: #0969da;
+        margin-top: 16px;
+        margin-bottom: 6px;
+    }
+    p {
+        margin: 6px 0;
+    }
+    .alert-box {
+        background-color: #ddf4ff;
+        border-left: 4px solid #0969da;
+        padding: 10px 14px;
+        border-radius: 0 6px 6px 0;
+        margin: 14px 0;
+        font-size: 12.5px;
+    }
+    .alert-box strong {
+        color: #0969da;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0;
+        font-size: 12px;
+    }
+    th, td {
+        border: 1px solid #d0d7de;
+        padding: 7px 10px;
+        text-align: left;
+        vertical-align: top;
+    }
+    th {
+        background-color: #f6f8fa;
+        font-weight: 600;
+        color: #1f2328;
+    }
+    tr:nth-child(even) td {
+        background-color: #fcfcfc;
+    }
+    .badge {
+        display: inline-block;
+        padding: 2px 7px;
+        font-size: 11px;
+        font-weight: 600;
+        border-radius: 12px;
+        background-color: #dafbe1;
+        color: #1a7f37;
+        border: 1px solid #aceebb;
+    }
+    code {
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        font-size: 11.5px;
+        background-color: #f6f8fa;
+        padding: 2px 5px;
+        border-radius: 4px;
+        border: 1px solid #e1e4e8;
+    }
+    pre {
+        font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+        background-color: #f6f8fa;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        padding: 10px;
+        font-size: 11.5px;
+        overflow-x: auto;
+        line-height: 1.45;
+        margin: 8px 0;
+    }
+    .diagram-container {
+        background: #f6f8fa;
+        border: 1px solid #d0d7de;
+        border-radius: 6px;
+        padding: 14px;
+        margin: 15px 0;
+        text-align: center;
+    }
+    .diagram-svg {
+        max-width: 100%;
+        height: auto;
+    }
+    .qa-box {
+        background: #fdfdfd;
+        border: 1px solid #e1e4e8;
+        border-radius: 6px;
+        padding: 10px 14px;
+        margin-bottom: 10px;
+    }
+    .qa-question {
+        font-weight: bold;
+        color: #0969da;
+        margin-bottom: 4px;
+    }
+    .page-break {
+        page-break-before: always;
+    }
+</style>
+</head>
+<body>
+
+<div class="header-box">
+    <h1>Informe Técnico de Cumplimiento: Programación Orientada a Objetos</h1>
+    <div class="subtitle">Evaluación Integral y Trazabilidad de Consigna de Cátedra | Proyecto: DocuGestión 2</div>
+</div>
+
+<div class="meta-grid">
+    <div class="meta-item">
+        <strong>Proyecto:</strong> DocuGestión 2 (Java)
+    </div>
+    <div class="meta-item">
+        <strong>Materia:</strong> Programación Orientada a Objetos
+    </div>
+    <div class="meta-item">
+        <strong>Estado General:</strong> <span class="badge">100% CUMPLE</span>
+    </div>
+</div>
+
+<div class="alert-box">
+    <strong>Resumen Ejecutivo:</strong> El presente proyecto integra de manera coherente y funcional los pilares fundamentales de la POO (Abstracción, Encapsulamiento, Herencia y Polimorfismo), junto con interfaces, colecciones genéricas (<code>ArrayList</code>), interacción por consola con <code>Scanner</code>, sobrecarga de constructores y un sistema de menús jerárquico por roles. Todas las clases están vinculadas por relaciones de negocio sólidas, evitando clases aisladas.
+</div>
+
+<h2>1. Contexto del Problema y Arquitectura del Sistema</h2>
+<p>
+El sistema <strong>DocuGestión 2</strong> aborda la problemática de control logístico y documental en una distribuidora comercial. La solución se organiza en dos dominios integrados:
+</p>
+<ul>
+    <li><strong>Dominio de Recursos Humanos y Seguridad:</strong> Modela las entidades de personas físicas (<code>Persona</code>), trabajadores con rol operativo/administrativo y salarial (<code>Trabajador</code>), y usuarios con credenciales de acceso para autenticación por roles (<code>Usuarios</code>).</li>
+    <li><strong>Dominio Documental y Operativo:</strong> Modela documentos mercantiles (<code>Documento</code>), remitos con detalle de mercadería despachada (<code>Remito</code>) y despachos logísticos de entrega (<code>Despacho</code>) asociados a remitos y operarios.</li>
+</ul>
+
+<div class="diagram-container">
+    <svg viewBox="0 0 760 380" class="diagram-svg" xmlns="http://www.w3.org/2000/svg">
+        <!-- Interfaz Imprimible -->
+        <rect x="280" y="10" width="200" height="60" rx="6" fill="#f0f7ff" stroke="#0969da" stroke-width="2"/>
+        <text x="380" y="30" text-anchor="middle" font-weight="bold" font-size="11" fill="#0969da">&lt;&lt;interface&gt;&gt;</text>
+        <text x="380" y="46" text-anchor="middle" font-weight="bold" font-size="13" fill="#1f2328">Imprimible</text>
+        <text x="380" y="60" text-anchor="middle" font-size="10" fill="#59636e">+mostrarInformacion() | +obtenerResumen()</text>
+
+        <!-- Persona -->
+        <rect x="50" y="105" width="220" height="70" rx="6" fill="#fff" stroke="#59636e" stroke-width="1.5"/>
+        <text x="160" y="125" text-anchor="middle" font-weight="bold" font-size="11" fill="#59636e">&lt;&lt;abstract&gt;&gt;</text>
+        <text x="160" y="142" text-anchor="middle" font-weight="bold" font-size="13" fill="#1f2328">Persona (Clase Padre)</text>
+        <text x="160" y="160" text-anchor="middle" font-size="10" fill="#59636e">dni, nombre, apellido, email, telefono</text>
+
+        <!-- Documento -->
+        <rect x="490" y="105" width="220" height="70" rx="6" fill="#fff" stroke="#59636e" stroke-width="1.5"/>
+        <text x="600" y="125" text-anchor="middle" font-weight="bold" font-size="11" fill="#59636e">&lt;&lt;abstract&gt;&gt;</text>
+        <text x="600" y="142" text-anchor="middle" font-weight="bold" font-size="13" fill="#1f2328">Documento (Clase Padre)</text>
+        <text x="600" y="160" text-anchor="middle" font-size="10" fill="#59636e">id_documento, tipo, fecha_creacion</text>
+
+        <!-- Flechas implementacion -->
+        <path d="M 280 40 L 160 40 L 160 105" fill="none" stroke="#0969da" stroke-dasharray="4" stroke-width="1.5"/>
+        <path d="M 480 40 L 600 40 L 600 105" fill="none" stroke="#0969da" stroke-dasharray="4" stroke-width="1.5"/>
+
+        <!-- Trabajador -->
+        <rect x="50" y="200" width="220" height="60" rx="6" fill="#fff" stroke="#59636e" stroke-width="1.5"/>
+        <text x="160" y="222" text-anchor="middle" font-weight="bold" font-size="12" fill="#1f2328">Trabajador (Clase Hija)</text>
+        <text x="160" y="240" text-anchor="middle" font-size="10" fill="#59636e">#id_trabajador, #cargo, #salario</text>
+
+        <!-- Usuarios -->
+        <rect x="50" y="285" width="220" height="65" rx="6" fill="#fff" stroke="#59636e" stroke-width="1.5"/>
+        <text x="160" y="307" text-anchor="middle" font-weight="bold" font-size="12" fill="#1f2328">Usuarios (Clase Nieta)</text>
+        <text x="160" y="325" text-anchor="middle" font-size="10" fill="#59636e">-id_usuario, -usuario, -contrasena</text>
+        <text x="160" y="339" text-anchor="middle" font-size="9" fill="#1a7f37">+validarCredenciales() static</text>
+
+        <!-- Flechas herencia Personas -->
+        <line x1="160" y1="175" x2="160" y2="200" stroke="#59636e" stroke-width="2"/>
+        <polygon points="160,175 155,185 165,185" fill="#59636e"/>
+        <line x1="160" y1="260" x2="160" y2="285" stroke="#59636e" stroke-width="2"/>
+        <polygon points="160,260 155,270 165,270" fill="#59636e"/>
+
+        <!-- Remito -->
+        <rect x="370" y="200" width="170" height="60" rx="6" fill="#fff" stroke="#59636e" stroke-width="1.5"/>
+        <text x="455" y="222" text-anchor="middle" font-weight="bold" font-size="12" fill="#1f2328">Remito (Hija Doc)</text>
+        <text x="455" y="240" text-anchor="middle" font-size="10" fill="#59636e">num_remito, fecha_entrega, preparado</text>
+
+        <!-- Despacho -->
+        <rect x="570" y="200" width="170" height="60" rx="6" fill="#fff" stroke="#59636e" stroke-width="1.5"/>
+        <text x="655" y="222" text-anchor="middle" font-weight="bold" font-size="12" fill="#1f2328">Despacho (Hija Doc)</text>
+        <text x="655" y="240" text-anchor="middle" font-size="10" fill="#59636e">operario, bultos, nota, entregado</text>
+
+        <!-- Flechas herencia Documentos -->
+        <line x1="550" y1="175" x2="455" y2="200" stroke="#59636e" stroke-width="2"/>
+        <polygon points="550,175 545,185 555,183" fill="#59636e"/>
+        <line x1="650" y1="175" x2="655" y2="200" stroke="#59636e" stroke-width="2"/>
+        <polygon points="650,175 645,185 655,185" fill="#59636e"/>
+
+        <!-- Composicion Despacho - Remito -->
+        <path d="M 570 230 L 540 230" stroke="#cf222e" stroke-width="2"/>
+        <polygon points="570,230 562,226 554,230 562,234" fill="#cf222e"/>
+        <text x="555" y="220" font-size="9" fill="#cf222e">compone</text>
+
+        <!-- Detalle y Producto -->
+        <rect x="370" y="285" width="170" height="55" rx="6" fill="#fff" stroke="#59636e" stroke-width="1.5"/>
+        <text x="455" y="307" text-anchor="middle" font-weight="bold" font-size="12" fill="#1f2328">Detalle</text>
+        <text x="455" y="325" text-anchor="middle" font-size="10" fill="#59636e">producto</text>
+
+        <rect x="570" y="285" width="170" height="55" rx="6" fill="#fff" stroke="#59636e" stroke-width="1.5"/>
+        <text x="655" y="307" text-anchor="middle" font-weight="bold" font-size="12" fill="#1f2328">Producto</text>
+        <text x="655" y="325" text-anchor="middle" font-size="10" fill="#59636e">codigo, nombre, cantidad</text>
+
+        <!-- Composicion Remito -> Detalle -> Producto -->
+        <line x1="455" y1="260" x2="455" y2="285" stroke="#cf222e" stroke-width="2"/>
+        <polygon points="455,260 451,268 455,276 459,268" fill="#cf222e"/>
+        <line x1="540" y1="312" x2="570" y2="312" stroke="#cf222e" stroke-width="2"/>
+        <polygon points="540,312 548,308 556,312 548,316" fill="#cf222e"/>
+    </svg>
+</div>
+
+<div class="page-break"></div>
+
+<h2>2. Matriz Exhaustiva de Cumplimiento de la Consigna</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th style="width: 22%;">Concepto Solicitado</th>
+            <th style="width: 12%;">Estado</th>
+            <th style="width: 32%;">Archivo y Líneas de Código</th>
+            <th style="width: 34%;">Demostración Práctica</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Clases y Objetos</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>src/logica/</code><br><code>src/persistencia/DespachoCrud.java:28-58</code></td>
+            <td>Definición formal de moldes de objetos e instanciación con operador <code>new</code> en tiempo de ejecución.</td>
+        </tr>
+        <tr>
+            <td><strong>Atributos y Métodos</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td>Todas las clases del modelo.<br>Ej: <code>Remito.java:8-12, 52-61</code></td>
+            <td>Atributos de estado encapsulados y métodos de comportamiento con validación lógica de negocio.</td>
+        </tr>
+        <tr>
+            <td><strong>Constructores</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Persona.java:10-16</code><br><code>Trabajador.java:11-16</code></td>
+            <td>Inicialización de atributos y encadenamiento seguro con la superclase mediante <code>super(...)</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>Getters y Setters</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Persona.java:18-56</code><br><code>Despacho.java:36-68</code></td>
+            <td>Encapsulamiento estricto. Los setters en <code>Despacho</code> validan que el operario no sea vacío ni bultos negativos.</td>
+        </tr>
+        <tr>
+            <td><strong>Método <code>toString()</code></strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Persona.java:58-65</code><br><code>Trabajador.java:39-44</code><br><code>Usuarios.java:90-95</code></td>
+            <td>Sobreescrito con <code>@Override</code> en todas las clases, aprovechando <code>super.toString()</code> para reutilizar código.</td>
+        </tr>
+        <tr>
+            <td><strong>Sobrecarga de Constructores</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Producto.java:9-21</code><br>Consumo en <code>DespachoCrud.java:39-45</code></td>
+            <td>Tres constructores en <code>Producto</code>: por defecto, con 2 parámetros (asume stock 0) y con 3 parámetros.</td>
+        </tr>
+        <tr>
+            <td><strong>Herencia</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Persona &rarr; Trabajador &rarr; Usuarios</code><br><code>Documento &rarr; Remito / Despacho</code></td>
+            <td>Herencia lineal en 3 niveles y herencia en árbol para la gestión de documentos.</td>
+        </tr>
+        <tr>
+            <td><strong>Sobreescritura de Métodos</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>mostrarInformacion()</code> y <code>toString()</code> en clases hijas.</td>
+            <td>Métodos abstractos de <code>Persona</code> y <code>Documento</code> redefinidos en cada subclase con <code>@Override</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>Composición entre Clases</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Despacho.java:6</code> (con Remito)<br><code>Remito.java:10, 21</code> (con Detalle)<br><code>Detalle.java:4</code> (con Producto)</td>
+            <td>Relaciones "tiene un" de ciclo de vida fuerte. El remito instancia y administra sus propios detalles.</td>
+        </tr>
+        <tr>
+            <td><strong>Uso de <code>ArrayList</code></strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Usuarios.java:10</code><br><code>Remito.java:10</code><br><code>DespachoCrud.java:13, 87</code></td>
+            <td>Colecciones dinámicas para almacenar usuarios registrados, detalles de remito, despachos y lista polimórfica.</td>
+        </tr>
+        <tr>
+            <td><strong>Implementación de Menús</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>MenuPrincipal.java:25-135</code><br><code>MenuUsers.java:8-41</code></td>
+            <td>Menús navegables por consola con control de flujo según el rol del usuario (admin, operario, vendedor, logistica).</td>
+        </tr>
+        <tr>
+            <td><strong>Uso de <code>Scanner</code></strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Utiles.java:7-36</code></td>
+            <td>Centralización de lectura por consola con <code>Scanner(System.in)</code> evitando errores de buffer.</td>
+        </tr>
+        <tr>
+            <td><strong>Polimorfismo</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>DespachoCrud.java:80-98</code><br><code>MenuPrincipal.java:32, 42</code></td>
+            <td>Colección <code>List&lt;Documento&gt;</code> que almacena <code>Remito</code> y <code>Despacho</code>, invocando métodos polimórficos dinámicamente.</td>
+        </tr>
+        <tr>
+            <td><strong>Interfaces</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>Imprimible.java:3-6</code><br>Implementado en <code>Documento</code> y <code>Persona</code></td>
+            <td>Contrato formal <code>Imprimible</code> con métodos <code>mostrarInformacion()</code> y <code>obtenerResumen()</code>.</td>
+        </tr>
+        <tr>
+            <td><strong>Modificadores de Acceso</strong></td>
+            <td><span class="badge">CUMPLE</span></td>
+            <td><code>public</code>, <code>private</code>, <code>static</code>, <code>abstract</code>, <code>protected</code></td>
+            <td>Uso deliberado de cada modificador con propósito claro de diseño y encapsulamiento.</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<h2>3. Análisis Detallado de Puntos Clave</h2>
+
+<h3>3.1. Estructura Mínima Solicitada</h3>
+<ol>
+    <li><strong>Clase Padre:</strong> <code>Persona</code> (clase abstracta con datos generales de identidad).</li>
+    <li><strong>Clase Hija:</strong> <code>Trabajador</code> (incorpora identidad laboral, cargo y salario mediante modificadores <code>protected</code>).</li>
+    <li><strong>Clase Nieta:</strong> <code>Usuarios</code> (incorpora credenciales de seguridad para el inicio de sesión y autenticación en el sistema).</li>
+    <li><strong>Clases Relacionadas por Composición:</strong> 
+        <code>Despacho</code> compone a <code>Remito</code>; a su vez <code>Remito</code> compone una colección de <code>Detalle</code>, que compone a <code>Producto</code>.
+    </li>
+    <li><strong>Clase Principal con <code>main()</code>:</strong> 
+        <code>app.Main</code>, la cual inicia el control de sesiones con hasta 3 intentos de login y delega en el menú principal según el rol.
+    </li>
+</ol>
+
+<h3>3.2. Implementación de Interfaces y Polimorfismo</h3>
+<p>
+Para satisfacer la consigna con el máximo rigor académico, se creó la interfaz <code>Imprimible</code>:
+</p>
+<pre><code>package logica;
+
+public interface Imprimible {
+    void mostrarInformacion();
+    String obtenerResumen();
+}</code></pre>
+<p>
+Tanto <code>Documento</code> como <code>Persona</code> implementan este contrato. En <code>DespachoCrud.java</code> se diseñó el método <code>listarHistorialDocumentos()</code> que demuestra el polimorfismo puro:
+</p>
+<pre><code>// Colección polimórfica basada en la superclase abstracta
+List&lt;Documento&gt; documentos = new ArrayList&lt;&gt;();
+for (Despacho d : despachos) {
+    documentos.add(d.getRemito()); // Agrega un Remito
+    documentos.add(d);             // Agrega un Despacho
+}
+
+// Invocación polimórfica resuelta en tiempo de ejecución (Late Binding)
+for (Documento doc : documentos) {
+    System.out.println("Resumen: " + doc.obtenerResumen()); // Ligadura de interfaz
+    doc.mostrarInformacion();                              // Ligadura de clase abstracta
+}</code></pre>
+
+<h3>3.3. Integración de `Producto`, `Detalle` y Sobrecarga de Constructores</h3>
+<p>
+En la carga interactiva de despachos (<code>DespachoCrud.crearDespacho()</code>), el sistema solicita al usuario cargar productos para el remito, aplicando la sobrecarga de constructores de <code>Producto</code> según los datos provistos:
+</p>
+<pre><code>// Demostración práctica de sobrecarga de constructores
+Producto producto;
+if (cant > 0) {
+    producto = new Producto(cod, nom, cant); // Constructor de 3 parámetros
+} else {
+    producto = new Producto(cod, nom);       // Constructor sobrecargado de 2 parámetros
+}
+remito.agregarProducto(producto);            // Demostración de composición</code></pre>
+
+<h2>4. Guía Estratégica para la Defensa Oral</h2>
+
+<div class="qa-box">
+    <div class="qa-question">P: ¿Por qué Persona y Documento son clases abstractas?</div>
+    <div>R: Porque en nuestro modelo de negocio no existen "personas genéricas" ni "documentos genéricos" en el plano real; siempre son trabajadores/usuarios específicos o remitos/despachos concretos. Su rol es servir de superclase base para reutilizar atributos y obligar a las clases hijas a implementar el método abstracto <code>mostrarInformacion()</code>.</div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">P: ¿Cuál es la diferencia entre la Herencia de Persona y la Composición de Remito con Detalle?</div>
+    <div>R: La herencia responde a la relación "es un" (un <code>Trabajador</code> <em>es una</em> <code>Persona</code>). La composición responde a la relación "tiene un" o "parte de" (un <code>Remito</code> <em>tiene</em> detalles de producto, y si se destruye el remito, sus detalles carecen de sentido individual).</div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">P: ¿Dónde se comprueba el uso de modificadores protected?</div>
+    <div>R: En <code>Trabajador.java</code> y <code>Documento.java</code>. Los atributos como <code>cargo</code>, <code>salario</code> y <code>id_trabajador</code> están protegidos para que la clase nieta <code>Usuarios</code> acceda a ellos directamente sin violar el encapsulamiento hacia clases externas.</div>
+</div>
+
+<div class="qa-box">
+    <div class="qa-question">P: ¿Por qué la lista de usuarios y el Scanner son static?</div>
+    <div>R: La lista <code>usuariosRegistrados</code> en <code>Usuarios.java</code> es estática para que todas las instancias compartan el mismo registro de autenticación en memoria. El <code>Scanner</code> en <code>Utiles.java</code> es estático para centralizar el flujo de entrada estándar <code>System.in</code> y evitar conflictos de múltiples lectores abiertos.</div>
+</div>
+
+</body>
+</html>
+"""
+
+html_path = r"c:\Users\user\Desktop\Software\java\Final\DocuGestion2\informe_cumplimiento_poo.html"
+pdf_path = r"c:\Users\user\Desktop\Software\java\Final\DocuGestion2\Informe_Cumplimiento_POO_DocuGestion2.pdf"
+
+with open(html_path, "w", encoding="utf-8") as f:
+    f.write(html_content)
+
+print(f"HTML escrito en: {html_path}")
+
+edge_path = r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"
+cmd = [
+    edge_path,
+    "--headless=new",
+    "--disable-gpu",
+    "--no-pdf-header-footer",
+    f"--print-to-pdf={pdf_path}",
+    html_path
+]
+
+print("Generando PDF mediante Microsoft Edge headless...")
+res = subprocess.run(cmd, capture_output=True, text=True)
+
+if os.path.exists(pdf_path) and os.path.getsize(pdf_path) > 0:
+    print(f"PDF generado exitosamente: {pdf_path} ({os.path.getsize(pdf_path)} bytes)")
+else:
+    print("Error generando PDF.")
+    print("Stdout:", res.stdout)
+    print("Stderr:", res.stderr)

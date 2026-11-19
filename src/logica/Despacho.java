@@ -84,4 +84,10 @@ public class Despacho extends Documento {
         System.out.println("Entregado: " + (entregado ? "Sí" : "No"));
     }
 
+    @Override
+    public String obtenerResumen() {
+        return "Despacho ID: " + getId_documento() + " | Remito Asociado Nº: " + remito.getNum_remito()
+                + " | Operario: " + operario + " | Bultos: " + bultos + " | Entregado: " + (entregado ? "Sí" : "No");
+    }
+
 }

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import logica.Despacho;
+import logica.Documento;
+import logica.Producto;
 import logica.Remito;
 import utils.Utiles;
 
@@ -27,12 +29,34 @@ public class DespachoCrud {
         int numeroRemito = Utiles.leerEntero("Número del remito: ");
         Remito remito = new Remito(numeroRemito);
 
+        System.out.println("\n--- Carga de productos en el Remito ---");
+        String agregar;
+        do {
+            int cod = Utiles.leerEntero("Código del producto: ");
+            String nom = Utiles.leerString("Nombre del producto: ");
+            int cant = Utiles.leerEntero("Cantidad (0 si no desea especificar ahora): ");
+
+            // Demostración de sobrecarga de constructores de Producto
+            Producto producto;
+            if (cant > 0) {
+                producto = new Producto(cod, nom, cant); // Constructor sobrecargado con 3 parámetros
+            } else {
+                producto = new Producto(cod, nom);       // Constructor sobrecargado con 2 parámetros
+            }
+
+            // Demostración de composición: Remito -> Detalle -> Producto
+            remito.agregarProducto(producto);
+
+            agregar = Utiles.leerString("¿Desea agregar otro producto al remito? (s/n): ");
+        } while (agregar.trim().equalsIgnoreCase("s"));
+
+        System.out.println("\n--- Datos del Despacho ---");
         String operario = Utiles.leerString("Operario: ");
         int bultos = Utiles.leerEntero("Cantidad de bultos: ");
         String nota = Utiles.leerString("Nota: ");
 
         Despacho despacho = crearDespacho(remito, operario, bultos, nota);
-        System.out.println("Despacho creado:");
+        System.out.println("\nDespacho y remito creados con éxito:");
         despacho.mostrarInformacion();
     }
 
@@ -49,6 +73,28 @@ public class DespachoCrud {
         for (Despacho despacho : despachos) {
             despacho.mostrarInformacion();
             System.out.println();
+        }
+    }
+
+    // Demostración explícita de Polimorfismo con la clase abstracta Documento y la interfaz Imprimible
+    public void listarHistorialDocumentos() {
+        if (despachos.isEmpty()) {
+            System.out.println("No hay documentos cargados.");
+            return;
+        }
+
+        // Colección polimórfica que almacena diferentes subtipos de Documento
+        List<Documento> documentos = new ArrayList<>();
+        for (Despacho d : despachos) {
+            documentos.add(d.getRemito()); // Subclase Remito
+            documentos.add(d);             // Subclase Despacho
+        }
+
+        System.out.println("\n=== Historial General de Documentos (Polimorfismo) ===");
+        for (Documento doc : documentos) {
+            System.out.println("Resumen: " + doc.obtenerResumen()); // Invocación polimórfica de la interfaz Imprimible
+            doc.mostrarInformacion();                              // Invocación polimórfica de método abstracto
+            System.out.println("--------------------------------------------------");
         }
     }
 
@@ -129,7 +175,7 @@ public class DespachoCrud {
         despacho.setNota(nota);
     }
 
-        public void eliminarDespacho() {
+    public void eliminarDespacho() {
         if (despachos.isEmpty()) {
             System.out.println("No hay despachos para eliminar.");
             return;
@@ -157,5 +203,4 @@ public class DespachoCrud {
         despachos.remove(despacho);
         despacho.getRemito().desmarcarComoPreparado();
     }
-
 }

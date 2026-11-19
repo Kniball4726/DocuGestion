@@ -98,4 +98,8 @@ public class Usuarios extends Trabajador {
         System.out.println(this.toString());
     }
 
+    @Override
+    public String obtenerResumen() {
+        return "Usuario: " + usuario + " | Cargo: " + cargo + " | Nombre: " + getNombre() + " " + getApellido();
+    }
 }

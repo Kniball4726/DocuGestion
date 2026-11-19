@@ -1,6 +1,6 @@
 package logica;
 
-public abstract class Persona {
+public abstract class Persona implements Imprimible {
     private String dni;
     private String nombre;
     private String apellido;
@@ -58,13 +58,17 @@ public abstract class Persona {
     @Override 
     public String toString(){
         return "Persona: \nDNI: " + dni +
-                "\nNombre:" + nombre +
+                "\nNombre: " + nombre +
                 "\nApellido: " + apellido +
                 "\nEmail: " + email +
-                "\nTelefono: " + telefono ;
+                "\nTelefono: " + telefono;
     }
     
-    
+    @Override
     public abstract void mostrarInformacion();
 
+    @Override
+    public String obtenerResumen() {
+        return nombre + " " + apellido + " (DNI: " + dni + ")";
+    }
 }
