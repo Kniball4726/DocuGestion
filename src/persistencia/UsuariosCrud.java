@@ -1,7 +1,6 @@
 package persistencia;
 
 import java.util.List;
-
 import logica.Usuarios;
 import utils.Utiles;
 
@@ -25,15 +24,15 @@ public class UsuariosCrud {
     }
 
     public void crearUsuarioDesdeConsola() {
-        String dni = leerTexto("DNI: ");
-        String nombre = leerTexto("Nombre: ");
-        String apellido = leerTexto("Apellido: ");
-        String email = leerTexto("Email: ");
-        String telefono = leerTexto("Teléfono: ");
-        String cargo = leerTexto("Cargo: ");
-        double salario = leerDouble("Salario: ");
-        String usuario = leerTexto("Usuario: ");
-        String contrasena = leerTexto("Contraseña: ");
+        String dni = Utiles.leerString("DNI: ");
+        String nombre = Utiles.leerString("Nombre: ");
+        String apellido = Utiles.leerString("Apellido: ");
+        String email = Utiles.leerString("Email: ");
+        String telefono = Utiles.leerString("Teléfono: ");
+        String cargo = Utiles.leerString("Cargo: ");
+        double salario = Utiles.leerDouble("Salario: ");
+        String usuario = Utiles.leerString("Usuario: ");
+        String contrasena = Utiles.leerString("Contraseña: ");
 
         Usuarios creado = crearUsuario(dni, nombre, apellido, email, telefono, cargo, salario, usuario, contrasena);
         System.out.println("Usuario creado correctamente:");
@@ -77,7 +76,7 @@ public class UsuariosCrud {
     }
 
     public void buscarUsuario() {
-        int id = leerEntero("Ingrese el ID del usuario a buscar: ");
+        int id = Utiles.leerEntero("Ingrese el ID del usuario a buscar: ");
         Usuarios usuario = buscarPorId(id);
         if (usuario == null) {
             System.out.println("No existe un usuario con ese ID.");
@@ -87,7 +86,7 @@ public class UsuariosCrud {
     }
 
     public void actualizarUsuario() {
-        int id = leerEntero("Ingrese el ID del usuario a actualizar: ");
+        int id = Utiles.leerEntero("Ingrese el ID del usuario a actualizar: ");
         Usuarios usuario = buscarPorId(id);
         if (usuario == null) {
             System.out.println("No existe un usuario con ese ID.");
@@ -104,42 +103,27 @@ public class UsuariosCrud {
             System.out.println("6.- Modificar salario");
             System.out.println("7.- Modificar usuario");
             System.out.println("8.- Modificar contraseña");
-            System.out.println("0.- Terminar");
-            opcion = leerEntero("Seleccione una opción: ");
+            System.out.println("0.- Volver al menú principal");
+            opcion = Utiles.leerEntero("Seleccione una opción: ");
 
             switch (opcion) {
-                case 1:
-                    usuario.setNombre(leerTexto("Nuevo nombre: "));
-                    break;
-                case 2:
-                    usuario.setApellido(leerTexto("Nuevo apellido: "));
-                    break;
-                case 3:
-                    usuario.setEmail(leerTexto("Nuevo email: "));
-                    break;
-                case 4:
-                    usuario.setTelefono(leerTexto("Nuevo teléfono: "));
-                    break;
-                case 5:
-                    usuario.setCargo(leerTexto("Nuevo cargo: "));
-                    break;
-                case 6:
-                    usuario.setSalario(leerDouble("Nuevo salario: "));
-                    break;
-                case 7:
-                    String nuevoUsuario = leerTexto("Nuevo nombre de usuario: ");
+                case 1 -> usuario.setNombre(Utiles.leerString("Nuevo nombre: "));
+                case 2 -> usuario.setApellido(Utiles.leerString("Nuevo apellido: "));
+                case 3 -> usuario.setEmail(Utiles.leerString("Nuevo email: "));
+                case 4 -> usuario.setTelefono(Utiles.leerString("Nuevo teléfono: "));
+                case 5 -> usuario.setCargo(Utiles.leerString("Nuevo cargo: "));
+                case 6 -> usuario.setSalario(Utiles.leerDouble("Nuevo salario: "));
+                case 7 -> {
+                    String nuevoUsuario = Utiles.leerString("Nuevo nombre de usuario: ");
                     if (buscarPorUsuario(nuevoUsuario) != null && !nuevoUsuario.equalsIgnoreCase(usuario.getUsuario())) {
                         throw new IllegalArgumentException("Ya existe un usuario con ese nombre.");
                     }
                     usuario.setUsuario(nuevoUsuario);
-                    break;
-                case 8:
-                    usuario.setContrasena(leerTexto("Nueva contraseña: "));
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Opción inválida.");
+                }
+                case 8 -> usuario.setContrasena(Utiles.leerString("Nueva contraseña: "));
+                case 0 -> {
+                }
+                default -> System.out.println("Opción inválida.");
             }
         } while (opcion != 0);
 
@@ -148,7 +132,14 @@ public class UsuariosCrud {
     }
 
     public void eliminarUsuario() {
-        int id = leerEntero("Ingrese el ID del usuario a eliminar: ");
+        if (Usuarios.getUsuariosRegistrados().isEmpty()) {
+            System.out.println("No hay usuarios para eliminar.");
+            return;
+        }
+
+        System.out.println("Usuarios disponibles para eliminar:");
+        listarUsuarios();
+        int id = Utiles.leerEntero("Ingrese el ID del usuario a eliminar: ");
         Usuarios usuario = buscarPorId(id);
         if (usuario == null) {
             System.out.println("No existe un usuario con ese ID.");
@@ -175,37 +166,5 @@ public class UsuariosCrud {
         Usuarios.getUsuariosRegistrados().remove(usuario);
     }
 
-    private int leerEntero(String mensaje) {
-        while (true) {
-            System.out.print(mensaje);
-            try {
-                return Integer.parseInt(Utiles.leerString().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Ingrese un número entero válido.");
-            }
-        }
-    }
-
-    private double leerDouble(String mensaje) {
-        while (true) {
-            System.out.print(mensaje);
-            try {
-                return Double.parseDouble(Utiles.leerString().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Ingrese un valor numérico válido.");
-            }
-        }
-    }
-
-    private String leerTexto(String mensaje) {
-        String valor;
-        do {
-            System.out.print(mensaje);
-            valor = Utiles.leerString().trim();
-            if (valor.isEmpty()) {
-                System.out.println("El texto no puede estar vacío.");
-            }
-        } while (valor.isEmpty());
-        return valor;
-    }
+    
 }

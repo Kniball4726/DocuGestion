@@ -9,7 +9,8 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "DocuGestion/app.Main",
-            "projectName": "DocuGestion"
+            "projectName": "DocuGestion",
+            "console": "integratedTerminal"
         },
         {
             "type": "java",

@@ -3,7 +3,6 @@ package persistencia;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
 import logica.Despacho;
 import logica.Remito;
 import utils.Utiles;
@@ -25,12 +24,12 @@ public class DespachoCrud {
     }
 
     public void crearDespacho() {
-        int numeroRemito = leerEntero("Número del remito: ");
+        int numeroRemito = Utiles.leerEntero("Número del remito: ");
         Remito remito = new Remito(numeroRemito);
 
-        String operario = leerTexto("Operario: ");
-        int bultos = leerNoNegativo("Cantidad de bultos: ");
-        String nota = leerTexto("Nota: ");
+        String operario = Utiles.leerString("Operario: ");
+        int bultos = Utiles.leerEntero("Cantidad de bultos: ");
+        String nota = Utiles.leerString("Nota: ");
 
         Despacho despacho = crearDespacho(remito, operario, bultos, nota);
         System.out.println("Despacho creado:");
@@ -72,7 +71,7 @@ public class DespachoCrud {
     }
 
     public void buscarDespacho() {
-        int idDespacho = leerEntero("Ingrese el ID del despacho a buscar: ");
+        int idDespacho = Utiles.leerEntero("Ingrese el ID del despacho a buscar: ");
         Despacho despacho = buscarPorId(idDespacho);
 
         if (despacho == null) {
@@ -84,7 +83,7 @@ public class DespachoCrud {
     }
 
     public void actualizarDespacho() {
-        int idDespacho = leerEntero("Ingrese el ID del despacho a actualizar: ");
+        int idDespacho = Utiles.leerEntero("Ingrese el ID del despacho a actualizar: ");
         Despacho despacho = buscarPorId(idDespacho);
 
         if (despacho == null) {
@@ -99,26 +98,19 @@ public class DespachoCrud {
             System.out.println("3.- Modificar nota");
             System.out.println("4.- Marcar como entregado");
             System.out.println("0.- Terminar");
-            opcion = leerEntero("Seleccione una opción: ");
+            opcion = Utiles.leerEntero("Seleccione una opción: ");
 
             switch (opcion) {
-                case 1:
-                    despacho.setOperario(leerTexto("Nuevo operario: "));
-                    break;
-                case 2:
-                    despacho.setBultos(leerNoNegativo("Cantidad de bultos: "));
-                    break;
-                case 3:
-                    despacho.setNota(leerTexto("Nueva nota: "));
-                    break;
-                case 4:
+                case 1 -> despacho.setOperario(Utiles.leerString("Nuevo operario: "));
+                case 2 -> despacho.setBultos(Utiles.leerEntero("Nueva cantidad de bultos: "));
+                case 3 -> despacho.setNota(Utiles.leerString("Nueva nota: "));
+                case 4 -> {
                     despacho.marcarComoEntregado();
                     System.out.println("El despacho fue marcado como entregado.");
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Opción inválida.");
+                }
+                case 0 -> {
+                }
+                default -> System.out.println("Opción inválida.");
             }
         } while (opcion != 0);
 
@@ -137,8 +129,15 @@ public class DespachoCrud {
         despacho.setNota(nota);
     }
 
-    public void eliminarDespacho() {
-        int idDespacho = leerEntero("Ingrese el ID del despacho a eliminar: ");
+        public void eliminarDespacho() {
+        if (despachos.isEmpty()) {
+            System.out.println("No hay despachos para eliminar.");
+            return;
+        }
+
+        System.out.println("Despachos disponibles para eliminar:");
+        listarDespachos();
+        int idDespacho = Utiles.leerEntero("Ingrese el ID del despacho a eliminar: ");
         Despacho despacho = buscarPorId(idDespacho);
 
         if (despacho == null) {
@@ -159,37 +158,4 @@ public class DespachoCrud {
         despacho.getRemito().desmarcarComoPreparado();
     }
 
-    private int leerEntero(String mensaje) {
-        while (true) {
-            System.out.print(mensaje);
-            try {
-                return Integer.parseInt(Utiles.leerString().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Ingrese un número entero válido.");
-            }
-        }
-    }
-
-    private int leerNoNegativo(String mensaje) {
-        int valor;
-        do {
-            valor = leerEntero(mensaje);
-            if (valor < 0) {
-                System.out.println("El valor no puede ser negativo.");
-            }
-        } while (valor < 0);
-        return valor;
-    }
-
-    private String leerTexto(String mensaje) {
-        String valor;
-        do {
-            System.out.print(mensaje);
-            valor = Utiles.leerString().trim();
-            if (valor.isEmpty()) {
-                System.out.println("El texto no puede estar vacío.");
-            }
-        } while (valor.isEmpty());
-        return valor;
-    }
 }
