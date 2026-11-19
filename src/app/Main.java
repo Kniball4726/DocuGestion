@@ -1,8 +1,11 @@
 package app;
 import igu.Login;
 import igu.MenuPrincipal;
+import persistencia.DespachoCrud;
+
 public class Main {
     public static void main(String[] args) {
+        DespachoCrud despachoCrud = new DespachoCrud();
         try {
             while (true) {
                 int intentos = 0;
@@ -30,7 +33,7 @@ public class Main {
                     return;
                 }
 
-                MenuPrincipal.MenuP(rol);
+                MenuPrincipal.MenuP(rol, despachoCrud);
                 System.out.println("Sesión cerrada. Volviendo al inicio de sesión.");
             }
         } catch (RuntimeException e) {
