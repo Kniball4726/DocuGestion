@@ -1,6 +1,9 @@
 package logica;
 
 public abstract class Persona implements Imprimible {
+    private static int siguienteId = 1;
+
+    protected final int id_persona;
     private String dni;
     private String nombre;
     private String apellido;
@@ -8,11 +11,16 @@ public abstract class Persona implements Imprimible {
     private String telefono;
 
     public Persona(String dni, String nombre, String apellido, String email, String telefono) {
+        this.id_persona = siguienteId++;
         this.dni = dni; 
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.telefono = telefono;
+    }
+
+    public int getId_persona() {
+        return id_persona;
     }
 
     public String getDni() {
@@ -57,7 +65,8 @@ public abstract class Persona implements Imprimible {
 
     @Override 
     public String toString(){
-        return "Persona: \nDNI: " + dni +
+        return "Persona: \nID Persona: " + id_persona +
+                "\nDNI: " + dni +
                 "\nNombre: " + nombre +
                 "\nApellido: " + apellido +
                 "\nEmail: " + email +
@@ -69,6 +78,6 @@ public abstract class Persona implements Imprimible {
 
     @Override
     public String obtenerResumen() {
-        return nombre + " " + apellido + " (DNI: " + dni + ")";
+        return "ID: " + id_persona + " - " + nombre + " " + apellido + " (DNI: " + dni + ")";
     }
 }

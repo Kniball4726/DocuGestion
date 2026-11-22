@@ -55,7 +55,7 @@ public class UsuariosCrud {
 
     public Usuarios buscarPorId(int idUsuario) {
         for (Usuarios usuario : Usuarios.getUsuariosRegistrados()) {
-            if (usuario.getId_usuario() == idUsuario) {
+            if (usuario.getId_usuario() == idUsuario || usuario.getId_trabajador() == idUsuario || usuario.getId_persona() == idUsuario) {
                 return usuario;
             }
         }

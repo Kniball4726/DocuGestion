@@ -15,23 +15,23 @@ public class Trabajador extends Persona {
         this.salario = salario;
     }
 
-    protected int getId_trabajador() {
+    public int getId_trabajador() {
         return id_trabajador;
     }
 
-    protected String getCargo() {
+    public String getCargo() {
         return cargo;
     }
 
-    protected void setCargo(String cargo) {
+    public void setCargo(String cargo) {
         this.cargo = cargo;
     }
 
-    protected double getSalario() {
+    public double getSalario() {
         return salario;
     }
 
-    protected void setSalario(double salario) {
+    public void setSalario(double salario) {
         this.salario = salario;
     }
 
@@ -46,6 +46,11 @@ public class Trabajador extends Persona {
     @Override
     public void mostrarInformacion() {
         System.out.println(this.toString());
+    }
+
+    @Override
+    public String obtenerResumen() {
+        return "Trabajador ID: " + id_trabajador + " | " + getNombre() + " " + getApellido() + " (Cargo: " + cargo + ")";
     }
 
 }

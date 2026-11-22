@@ -26,13 +26,13 @@ public class DespachoCrud {
     }
 
     public void crearDespacho() {
-        int numeroRemito = Utiles.leerEntero("Número del remito: ");
+        int numeroRemito = Utiles.leerEntero("Número del remito (0 para autoincremental): ");
         Remito remito = new Remito(numeroRemito);
 
         System.out.println("\n--- Carga de productos en el Remito ---");
         String agregar;
         do {
-            int cod = Utiles.leerEntero("Código del producto: ");
+            int cod = Utiles.leerEntero("Código del producto (0 para autoincremental): ");
             String nom = Utiles.leerString("Nombre del producto: ");
             int cant = Utiles.leerEntero("Cantidad (0 si no desea especificar ahora): ");
 
@@ -100,7 +100,7 @@ public class DespachoCrud {
 
     public Despacho buscarPorId(int idDespacho) {
         for (Despacho despacho : despachos) {
-            if (despacho.getId_documento() == idDespacho) {
+            if (despacho.getId_despacho() == idDespacho || despacho.getId_documento() == idDespacho) {
                 return despacho;
             }
         }
@@ -109,7 +109,7 @@ public class DespachoCrud {
 
     public Despacho buscarPorNumeroRemito(int numeroRemito) {
         for (Despacho despacho : despachos) {
-            if (despacho.getRemito().getNum_remito() == numeroRemito) {
+            if (despacho.getRemito().getNum_remito() == numeroRemito || despacho.getRemito().getId_remito() == numeroRemito) {
                 return despacho;
             }
         }

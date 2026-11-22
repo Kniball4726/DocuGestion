@@ -100,6 +100,6 @@ public class Usuarios extends Trabajador {
 
     @Override
     public String obtenerResumen() {
-        return "Usuario: " + usuario + " | Cargo: " + cargo + " | Nombre: " + getNombre() + " " + getApellido();
+        return "ID Usuario: " + id_usuario + " | Usuario: " + usuario + " | Cargo: " + cargo + " | Nombre: " + getNombre() + " " + getApellido();
     }
 }

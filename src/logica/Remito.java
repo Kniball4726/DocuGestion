@@ -5,16 +5,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Remito extends Documento {
+	private static int siguienteId = 1;
+
+	private final int id_remito;
 	private int num_remito;
 	private LocalDate fecha_entrega;
 	private ArrayList<Detalle> detalles = new ArrayList<>();
 	private boolean preparado;
 
+	public Remito() {
+		super("Remito", LocalDate.now());
+		this.id_remito = siguienteId++;
+		this.num_remito = this.id_remito;
+		this.fecha_entrega = getFecha_creacion().plusDays(1);
+	}
+
 	public Remito(int num_remito) {
 		super("Remito", LocalDate.now());
-		this.num_remito = num_remito;
+		this.id_remito = siguienteId++;
+		this.num_remito = (num_remito <= 0) ? this.id_remito : num_remito;
 		this.fecha_entrega = getFecha_creacion().plusDays(1);
+	}
 
+	public int getId_remito() {
+		return id_remito;
 	}
 
 	public void agregarProducto(Producto producto) {
@@ -63,12 +77,13 @@ public class Remito extends Documento {
 	
 	@Override
 	public String toString() {
-		return super.toString()+"Remito:\nNum_remito: " + num_remito + "\nFecha_entrega: " + fecha_entrega + "\nProductos: " + detalles
+		return super.toString() + "\nID Remito: " + id_remito + "\nNum_remito: " + num_remito + "\nFecha_entrega: " + fecha_entrega + "\nProductos: " + detalles
 				+ "\nPreparado: " + preparado;
 	}
 
 	@Override
 	public void mostrarInformacion() {
+		System.out.println("ID Remito: " + id_remito + " (Doc ID: " + getId_documento() + ")");
 		System.out.println("Número: " + num_remito);
 		System.out.println("Fecha de creación: " + getFecha_creacion());
 		System.out.println("Fecha de entrega: " + fecha_entrega);
@@ -81,7 +96,7 @@ public class Remito extends Documento {
 
 	@Override
 	public String obtenerResumen() {
-		return "Remito Nº " + num_remito + " | Entrega: " + fecha_entrega + " | Ítems: " + detalles.size() + " | Preparado: " + (preparado ? "Sí" : "No");
+		return "Remito ID: " + id_remito + " (Nº " + num_remito + ") | Entrega: " + fecha_entrega + " | Ítems: " + detalles.size() + " | Preparado: " + (preparado ? "Sí" : "No");
 	}
 }
 

@@ -3,6 +3,9 @@ package logica;
 import java.time.LocalDate;
 
 public class Despacho extends Documento {
+    private static int siguienteId = 1;
+
+    private final int id_despacho;
     private final Remito remito;
     private String operario;
     private int bultos;
@@ -18,11 +21,16 @@ public class Despacho extends Documento {
             throw new IllegalArgumentException("La cantidad de bultos no puede ser negativa.");
         }
 
+        this.id_despacho = siguienteId++;
         this.remito = remito;
         this.operario = operario;
         this.bultos = bultos;
         this.nota = nota;
         remito.marcarComoPreparado();
+    }
+
+    public int getId_despacho() {
+        return id_despacho;
     }
 
     public Remito getRemito() {
@@ -72,9 +80,14 @@ public class Despacho extends Documento {
     }
 
 
+    @Override 
+    public String toString() {
+        return super.toString() + "\nID Despacho: " + id_despacho + "\nOperario: " + operario + "\nBultos: " + bultos + "\nNota: " + nota + "\nEntregado: " + (entregado ? "Sí" : "No");
+    }
+
     @Override
     public void mostrarInformacion() {
-        System.out.println("Despacho ID: " + getId_documento());
+        System.out.println("Despacho ID: " + id_despacho + " (Doc ID: " + getId_documento() + ")");
         System.out.println("Fecha de creación: " + getFecha_creacion());
         System.out.println("Remito asociado:");
         remito.mostrarInformacion();
@@ -86,7 +99,7 @@ public class Despacho extends Documento {
 
     @Override
     public String obtenerResumen() {
-        return "Despacho ID: " + getId_documento() + " | Remito Asociado Nº: " + remito.getNum_remito()
+        return "Despacho ID: " + id_despacho + " (Doc ID: " + getId_documento() + ") | Remito Asociado Nº: " + remito.getNum_remito()
                 + " | Operario: " + operario + " | Bultos: " + bultos + " | Entregado: " + (entregado ? "Sí" : "No");
     }
 
