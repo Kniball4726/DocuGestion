@@ -7,7 +7,12 @@ public class MenuClientes {
 
     public static void mostrarMenu(ClientesCrud clientesCrud) {
         int opcion;
+        boolean limpiarSiguienteMenu = true;
         do {
+            if (limpiarSiguienteMenu) {
+                Utiles.limpiarConsola();
+            }
+            limpiarSiguienteMenu = true;
             System.out.println("\n--- Gestión de clientes ---");
             System.out.println("1.- Crear cliente");
             System.out.println("2.- Listar clientes");
@@ -19,8 +24,14 @@ public class MenuClientes {
 
             switch (opcion) {
                 case 1 -> clientesCrud.crearClienteDesdeConsola();
-                case 2 -> clientesCrud.listarClientes();
-                case 3 -> clientesCrud.buscarCliente();
+                case 2 -> {
+                    clientesCrud.listarClientes();
+                    limpiarSiguienteMenu = false;
+                }
+                case 3 -> {
+                    clientesCrud.buscarCliente();
+                    limpiarSiguienteMenu = false;
+                }
                 case 4 -> clientesCrud.actualizarCliente();
                 case 5 -> clientesCrud.eliminarCliente();
                 case 0 -> {

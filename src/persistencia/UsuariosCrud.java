@@ -95,6 +95,7 @@ public class UsuariosCrud {
 
         int opcion;
         do {
+            Utiles.limpiarConsola();
             System.out.println("1.- Modificar nombre");
             System.out.println("2.- Modificar apellido");
             System.out.println("3.- Modificar email");

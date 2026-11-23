@@ -7,7 +7,12 @@ public class MenuUsers {
 
     public static void mostrarMenu(UsuariosCrud usuariosCrud) {
         int opcionUsuario;
+        boolean limpiarSiguienteMenu = true;
         do {
+            if (limpiarSiguienteMenu) {
+                Utiles.limpiarConsola();
+            }
+            limpiarSiguienteMenu = true;
             System.out.println("\n--- Gestión de usuarios ---");
             System.out.println("1.- Crear usuario");
             System.out.println("2.- Listar usuarios");
@@ -25,10 +30,12 @@ public class MenuUsers {
                 case 2 -> {
                     mostrarEncabezado("Consultar usuarios", "Listar usuarios");
                     usuariosCrud.listarUsuarios();
+                    limpiarSiguienteMenu = false;
                 }
                 case 3 -> {
                     mostrarEncabezado("Buscar usuario", "Buscar usuario");
                     usuariosCrud.buscarUsuario();
+                    limpiarSiguienteMenu = false;
                 }
                 case 4 -> {
                     mostrarEncabezado("Modificar usuario", "Actualizar usuario");

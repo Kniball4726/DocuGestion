@@ -109,6 +109,7 @@ public class ClientesCrud {
 
         int opcion;
         do {
+            Utiles.limpiarConsola();
             System.out.println("1.- Modificar DNI");
             System.out.println("2.- Modificar nombre");
             System.out.println("3.- Modificar apellido");

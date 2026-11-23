@@ -4,6 +4,7 @@ import utils.Utiles;
 
 public class Login {
     public static String loguear(){
+        Utiles.limpiarConsola();
         System.out.println("\n----Bienvenido al Sistema de Gestión de Usuarios----");
         System.out.println("\nIndique sus credenciales:");
         String usuario = Utiles.leerString("Usuario: ");

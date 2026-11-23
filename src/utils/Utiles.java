@@ -5,6 +5,11 @@ import java.util.Scanner;
 public class Utiles {
     
     static Scanner leer = new Scanner(System.in);
+
+    public static void limpiarConsola() {
+        System.out.print("\u001B[2J\u001B[H");
+        System.out.flush();
+    }
     
     
     public static String leerString(){

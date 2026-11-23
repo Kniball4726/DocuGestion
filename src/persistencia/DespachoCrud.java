@@ -152,6 +152,7 @@ public class DespachoCrud {
 
         int opcion;
         do {
+            Utiles.limpiarConsola();
             System.out.println("1.- Modificar operario");
             System.out.println("2.- Modificar bultos");
             System.out.println("3.- Modificar nota");

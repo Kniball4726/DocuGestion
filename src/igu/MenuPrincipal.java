@@ -21,8 +21,13 @@ public class MenuPrincipal {
         }
 
         UsuariosCrud usuariosCrud = new UsuariosCrud();
+        boolean limpiarSiguienteMenu = true;
 
         while (true) {
+            if (limpiarSiguienteMenu) {
+                Utiles.limpiarConsola();
+            }
+            limpiarSiguienteMenu = true;
             System.out.println("\n----- Bienvenido al Menú Principal de " + rol + " -----");
 
             switch (rol) {
@@ -58,6 +63,7 @@ public class MenuPrincipal {
                             case "admin", "vendedor", "logistica" -> {
                                 mostrarEncabezado("Consultar despachos", "Ver despachos");
                                 despachoCrud.listarDespachos();
+                                limpiarSiguienteMenu = false;
                             }
                             case "operario" -> {
                                 mostrarEncabezado("Registrar despacho", "Cargar despacho");
@@ -75,10 +81,12 @@ public class MenuPrincipal {
                             case "operario" -> {
                                 mostrarEncabezado("Consultar despachos", "Ver despachos");
                                 despachoCrud.listarDespachos();
+                                limpiarSiguienteMenu = false;
                             }
                             case "vendedor", "logistica" -> {
                                 mostrarEncabezado("Consultar documentos", "Historial de documentos");
                                 despachoCrud.listarHistorialDocumentos();
+                                limpiarSiguienteMenu = false;
                             }
                             default -> System.out.println("Opción no disponible para este rol.");
                         }
@@ -109,6 +117,7 @@ public class MenuPrincipal {
                             case "admin", "operario" -> {
                                 mostrarEncabezado("Consultar documentos", "Historial de documentos");
                                 despachoCrud.listarHistorialDocumentos();
+                                limpiarSiguienteMenu = false;
                             }
                             default -> System.out.println("Opción no disponible para este rol.");
                         }
