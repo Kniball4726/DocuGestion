@@ -65,8 +65,7 @@ public abstract class Persona implements Imprimible {
 
     @Override 
     public String toString(){
-        return "Persona: \nID Persona: " + id_persona +
-                "\nDNI: " + dni +
+        return "\nDNI: " + dni +
                 "\nNombre: " + nombre +
                 "\nApellido: " + apellido +
                 "\nEmail: " + email +
@@ -78,6 +77,6 @@ public abstract class Persona implements Imprimible {
 
     @Override
     public String obtenerResumen() {
-        return "ID: " + id_persona + " - " + nombre + " " + apellido + " (DNI: " + dni + ")";
+        return "Persona: " + nombre + " " + apellido + " (DNI: " + dni + ")";
     }
 }

@@ -83,7 +83,6 @@ public class Remito extends Documento {
 
 	@Override
 	public void mostrarInformacion() {
-		System.out.println("ID Remito: " + id_remito + " (Doc ID: " + getId_documento() + ")");
 		System.out.println("Número: " + num_remito);
 		System.out.println("Fecha de creación: " + getFecha_creacion());
 		System.out.println("Fecha de entrega: " + fecha_entrega);

@@ -50,7 +50,7 @@ public class Trabajador extends Persona {
 
     @Override
     public String obtenerResumen() {
-        return "Trabajador ID: " + id_trabajador + " | " + getNombre() + " " + getApellido() + " (Cargo: " + cargo + ")";
+        return "Trabajador " + getNombre() + " " + getApellido() + " (Cargo: " + cargo + ")";
     }
 
 }

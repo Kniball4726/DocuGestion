@@ -12,8 +12,9 @@ public class Despacho extends Documento {
     private String nota;
     private boolean entregado;
 
-    public Despacho(Remito remito, LocalDate fecha_creacion, String operario, int bultos, String nota) {
+    public Despacho(Remito remito, LocalDate fecha_creacion, String cliente, String operario, int bultos, String nota) {
         super("Despacho", fecha_creacion);
+        this.remito = remito;
         if (remito == null) {
             throw new IllegalArgumentException("El remito no puede ser nulo.");
         }
@@ -22,7 +23,7 @@ public class Despacho extends Documento {
         }
 
         this.id_despacho = siguienteId++;
-        this.remito = remito;
+        super.setCliente(cliente);
         this.operario = operario;
         this.bultos = bultos;
         this.nota = nota;
@@ -87,7 +88,6 @@ public class Despacho extends Documento {
 
     @Override
     public void mostrarInformacion() {
-        System.out.println("Despacho ID: " + id_despacho + " (Doc ID: " + getId_documento() + ")");
         System.out.println("Fecha de creación: " + getFecha_creacion());
         System.out.println("Remito asociado:");
         remito.mostrarInformacion();
@@ -99,7 +99,7 @@ public class Despacho extends Documento {
 
     @Override
     public String obtenerResumen() {
-        return "Despacho ID: " + id_despacho + " (Doc ID: " + getId_documento() + ") | Remito Asociado Nº: " + remito.getNum_remito()
+        return "Remito Asociado Nº: " + remito.getNum_remito()
                 + " | Operario: " + operario + " | Bultos: " + bultos + " | Entregado: " + (entregado ? "Sí" : "No");
     }
 

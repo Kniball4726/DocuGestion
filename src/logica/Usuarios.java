@@ -14,6 +14,8 @@ public class Usuarios extends Trabajador {
                 "1111111111", "admin", 0, "admin", "admin123");
         new Usuarios("10000002", "Vendedor", "Demo", "vendedor@example.com",
                 "2222222222", "vendedor", 0, "vendedor", "venta123");
+        new Usuarios("10000003", "Operario", "Demo", "operario@example.com",
+                "3333333333", "operario", 0, "operario", "oper123");
     }
 
     private final int id_usuario;
@@ -100,6 +102,6 @@ public class Usuarios extends Trabajador {
 
     @Override
     public String obtenerResumen() {
-        return "ID Usuario: " + id_usuario + " | Usuario: " + usuario + " | Cargo: " + cargo + " | Nombre: " + getNombre() + " " + getApellido();
+        return "Usuario: " + usuario + " | Cargo: " + cargo + " | Nombre: " + getNombre() + " " + getApellido();
     }
 }

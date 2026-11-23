@@ -21,8 +21,7 @@ public class Detalle {
 
     @Override
     public String toString() {
-        return "\nID Detalle: " + id_detalle
-                + "\nProducto: " + producto.getNombre()
+        return    "\nProducto: " + producto.getNombre()
                 + "\nID Producto: " + producto.getId_producto()
                 + "\nCódigo: " + producto.getCodigo()
                 + "\nCantidad enviada: " + producto.getCantidad();

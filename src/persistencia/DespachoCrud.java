@@ -3,6 +3,7 @@ package persistencia;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import logica.Cliente;
 import logica.Despacho;
 import logica.Documento;
 import logica.Producto;
@@ -11,8 +12,17 @@ import utils.Utiles;
 
 public class DespachoCrud {
     private final List<Despacho> despachos = new ArrayList<>();
+    private final ClientesCrud clientesCrud = new ClientesCrud();
+
+    public ClientesCrud getClientesCrud() {
+        return clientesCrud;
+    }
 
     public Despacho crearDespacho(Remito remito, String operario, int bultos, String nota) {
+        return crearDespacho(remito, "", operario, bultos, nota);
+    }
+
+    public Despacho crearDespacho(Remito remito, String cliente, String operario, int bultos, String nota) {
         if (remito == null) {
             throw new IllegalArgumentException("El remito no puede ser nulo.");
         }
@@ -20,12 +30,13 @@ public class DespachoCrud {
             throw new IllegalStateException("El remito ya tiene un despacho asociado.");
         }
 
-        Despacho despacho = new Despacho(remito, LocalDate.now(), operario, bultos, nota);
+        Despacho despacho = new Despacho(remito, LocalDate.now(), cliente, operario, bultos, nota);
         despachos.add(despacho);
         return despacho;
     }
 
     public void crearDespacho() {
+        Cliente cliente = clientesCrud.buscarOCrearClienteParaDespacho();
         int numeroRemito = Utiles.leerEntero("Número del remito (0 para autoincremental): ");
         Remito remito = new Remito(numeroRemito);
 
@@ -55,7 +66,9 @@ public class DespachoCrud {
         int bultos = Utiles.leerEntero("Cantidad de bultos: ");
         String nota = Utiles.leerString("Nota: ");
 
-        Despacho despacho = crearDespacho(remito, operario, bultos, nota);
+        Despacho despacho = crearDespacho(remito,
+                cliente.getNombre() + " " + cliente.getApellido() + " (DNI: " + cliente.getDni() + ")",
+                operario, bultos, nota);
         System.out.println("\nDespacho y remito creados con éxito:");
         despacho.mostrarInformacion();
     }

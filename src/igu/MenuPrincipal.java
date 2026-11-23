@@ -31,6 +31,7 @@ public class MenuPrincipal {
                     System.out.println("2.- Eliminar despacho");
                     System.out.println("3.- Gestionar usuarios");
                     System.out.println("4.- Ver historial general de documentos (Polimorfismo)");
+                    System.out.println("5.- Gestionar clientes");
                     System.out.println("0.- Salir");
                 }
                 case "vendedor", "logistica" -> {
@@ -93,6 +94,14 @@ public class MenuPrincipal {
                                 despachoCrud.actualizarDespacho();
                             }
                             default -> System.out.println("Opción no disponible para este rol.");
+                        }
+                    }
+                    case 5 -> {
+                        if (rol.equals("admin")) {
+                            mostrarEncabezado("Administrar clientes", "Gestionar clientes");
+                            MenuClientes.mostrarMenu(despachoCrud.getClientesCrud());
+                        } else {
+                            System.out.println("Opción no disponible para este rol.");
                         }
                     }
                     case 4 -> {
